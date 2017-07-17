@@ -18,28 +18,23 @@
 # limitations under the License.
 #
 
-package network::cisco::asa::plugin;
+package apps::java::hibernate::jmx::plugin;
 
 use strict;
 use warnings;
-use base qw(centreon::plugins::script_snmp);
+use base qw(centreon::plugins::script_custom);
 
 sub new {
     my ($class, %options) = @_;
     my $self = $class->SUPER::new(package => __PACKAGE__, %options);
     bless $self, $class;
 
-    $self->{version} = '1.0';
+    $self->{version} = '0.1';
     %{$self->{modes}} = (
-                         'cpu'              => 'centreon::common::cisco::standard::snmp::mode::cpu',
-                         'failover'         => 'network::cisco::asa::mode::failover',
-                         'interfaces'       => 'snmp_standard::mode::interfaces',
-                         'ipsec-tunnel'     => 'centreon::common::cisco::standard::snmp::mode::ipsectunnel', 
-                         'list-interfaces'  => 'snmp_standard::mode::listinterfaces',
-                         'memory'           => 'centreon::common::cisco::standard::snmp::mode::memory',
-                         'sessions'         => 'centreon::common::cisco::standard::snmp::mode::sessions',
+                          'stats'        => 'apps::java::hibernate::jmx::mode::stats',
                          );
 
+    $self->{custom_modes}{jolokia} = 'centreon::common::protocols::jmx::custom::jolokia';
     return $self;
 }
 
@@ -49,7 +44,6 @@ __END__
 
 =head1 PLUGIN DESCRIPTION
 
-Check Cisco ASA in SNMP.
-!!! Be careful: Cisco ASA had an internal SNMP buffer of 512B. Use --subsetleef=20 (or lower) option !!!
+Check Hibernate in JMX. Need Jolokia agent.
 
 =cut
